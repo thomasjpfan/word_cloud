@@ -1,10 +1,20 @@
+import platform
 from setuptools import setup, Extension
 from wheel.bdist_wheel import bdist_wheel
 import sys
 from Cython.Build import cythonize
 
-# Limited ABI is only available in 3.11
-use_abi3 = sys.version_info >= (3, 11)
+# With memoryview, Limited ABI is only available in 3.11
+min_python_abi = (3, 11)
+newer_than_min_python = sys.version_info[:2] >= min_python_abi
+is_cpython = platform.python_implementation() == "CPython"
+if hasattr(sys, "_is_gil_enabled") and not sys._is_gil_enabled():
+    is_gil_enabled = False
+else:
+    is_gil_enabled = True
+
+use_abi3 = newer_than_min_python and is_cpython and is_gil_enabled
+
 
 if use_abi3:
     py_limited_api = True
@@ -20,10 +30,9 @@ else:
 class bdist_wheel_abi3(bdist_wheel):
     def get_tag(self):
         python, abi, plat = super().get_tag()
-        if use_abi3 and python.startswith("cp") and not abi.endswith("t"):
-            # on CPython, our wheels are abi3 and compatible back to 3.11
-            return "cp311", "abi3", plat
-
+        if use_abi3:
+            min_python_str = "".join(str(v) for v in min_python_abi)
+            return f"cp{min_python_str}", "abi3", plat
         return python, abi, plat
 
 
