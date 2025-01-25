@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "Cython>=0.29.33", "setuptools_scm"]
+requires = ["setuptools", "Cython==3.1.0a1", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -23,3 +23,6 @@ packages = ["wordcloud"]
 
 [tool.setuptools_scm]
 write_to = "wordcloud/_version.py"
+
+[tool.cibuildwheel]
+skip = ["*-win32", "*-manylinux_i686", "pp*"]
