@@ -1,5 +1,7 @@
 name: Build Wheel and Publish for Releases
 on:
+  push:
+    - thomasjpfan/abi3
   workflow_dispatch:
   release:
     types: [published]
