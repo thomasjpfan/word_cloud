@@ -730,7 +730,7 @@ class WordCloud(object):
         img.save(filename, optimize=True)
         return self
 
-    def to_array(self):
+    def to_array(self, copy=None):
         """Convert to numpy array.
 
         Returns
@@ -738,9 +738,9 @@ class WordCloud(object):
         image : nd-array size (width, height, 3)
             Word cloud image as numpy matrix.
         """
-        return np.array(self.to_image())
+        return np.asarray(self.to_image(), copy=copy)
 
-    def __array__(self):
+    def __array__(self, copy=None):
         """Convert to numpy array.
 
         Returns
@@ -748,7 +748,7 @@ class WordCloud(object):
         image : nd-array size (width, height, 3)
             Word cloud image as numpy matrix.
         """
-        return self.to_array()
+        return self.to_array(copy=copy)
 
     def to_svg(self, embed_font=False, optimize_embedded_font=True, embed_image=False):
         """Export to SVG.
