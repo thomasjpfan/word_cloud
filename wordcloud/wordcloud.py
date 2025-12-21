@@ -733,6 +733,13 @@ class WordCloud(object):
     def to_array(self, copy=None):
         """Convert to numpy array.
 
+        Parameters
+        ----------
+        copy : bool
+            If `True`, then the object is copied. If `None` then the object is copied
+            only if needed. For `False` it raises a ValueError if a copy cannot be
+            avoided. Default: `None`.
+
         Returns
         -------
         image : nd-array size (width, height, 3)
@@ -742,6 +749,13 @@ class WordCloud(object):
 
     def __array__(self, copy=None):
         """Convert to numpy array.
+
+        Parameters
+        ----------
+        copy : bool
+            If `True`, then the object is copied. If `None` then the object is copied
+            only if needed. For `False` it raises a ValueError if a copy cannot be
+            avoided. Default: `None`.
 
         Returns
         -------
