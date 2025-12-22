@@ -4,6 +4,7 @@ import sys
 
 extension_kwargs = {}
 options = {}
+setup_kwargs = {}
 
 is_gil_enabled = hasattr(sys, "_is_gil_enabled") and sys._is_gil_enabled()
 
@@ -12,7 +13,9 @@ if sys.version_info >= (3, 11) and not is_gil_enabled:
         ("Py_LIMITED_API", 0x030B0000)
     ]
     extension_kwargs["py_limited_api"] = True
-    options["bdist_wheel"] = {"py_limited_api": "cp311"}
+    setup_kwargs["options"] = {
+        {"bdist_wheel": {"py_limited_api": "cp311"}},
+    }
 
 
 setup(ext_modules=cythonize(
@@ -23,5 +26,5 @@ setup(ext_modules=cythonize(
             **extension_kwargs
         )
     ],
-    options=options
+    **setup_kwargs,
 ))
