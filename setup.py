@@ -2,20 +2,8 @@ from setuptools import setup, Extension
 from Cython.Build import cythonize
 import sys
 
-extension_kwargs = {}
-options = {}
-setup_kwargs = {}
-
 is_gil_enabled = hasattr(sys, "_is_gil_enabled") and sys._is_gil_enabled()
-
-if sys.version_info >= (3, 11) and not is_gil_enabled:
-    extension_kwargs["define_macros"] = [
-        ("Py_LIMITED_API", 0x030B0000)
-    ]
-    extension_kwargs["py_limited_api"] = True
-    setup_kwargs["options"] = {
-        {"bdist_wheel": {"py_limited_api": "cp311"}},
-    }
+enable_abi3 = sys.version_info >= (3, 11) and is_gil_enabled
 
 
 setup(ext_modules=cythonize(
@@ -23,8 +11,10 @@ setup(ext_modules=cythonize(
         Extension(
             name="wordcloud.query_integral_image",
             sources=["wordcloud/query_integral_image.pyx"],
-            **extension_kwargs
+            define_macros=[("Py_LIMITED_API", 0x030B0000) ] if enable_abi3 else [],
+            py_limited_api=enable_abi3
         )
     ],
-    **setup_kwargs,
-))
+),
+    options={"bdist_wheel": {"py_limited_api": "cp311"}} if enable_abi3 else {},
+)
