@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "Cython>=0.29.33", "setuptools_scm"]
+requires = ["setuptools", "Cython>=0.29.33", "setuptools_scm", "numpy>=2.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,7 +9,7 @@ description = "A little word cloud generator"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 license = "MIT"
-dependencies = ["numpy>=1.6.1", "pillow", "matplotlib"]
+dependencies = ["numpy>=1.19", "pillow", "matplotlib"]
 dynamic = ["version"]
 
 [project.urls]
