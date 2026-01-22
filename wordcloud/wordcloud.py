@@ -738,14 +738,22 @@ class WordCloud(object):
         copy : bool
             If `True`, then the object is copied. If `None` then the object is copied
             only if needed. For `False` it raises a ValueError if a copy cannot be
-            avoided. Default: `None`.
+            avoided. Default: `None`. `copy` is passed directly to `np.asarray`
+            which is supported on NumPy>=2.0. For older NumPy versions `copy` is
+            ignored.
 
         Returns
         -------
         image : nd-array size (width, height, 3)
             Word cloud image as numpy matrix.
         """
-        return np.asarray(self.to_image(), copy=copy)
+        image = self.to_image()
+        try:
+            return np.asarray(image, copy=copy)
+        except TypeError as e:
+            if "got an unexpected keyword argument 'copy'" in str(e):
+                return np.asarray(image)
+            raise
 
     def __array__(self, copy=None):
         """Convert to numpy array.
