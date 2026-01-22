@@ -748,12 +748,12 @@ class WordCloud(object):
             Word cloud image as numpy matrix.
         """
         image = self.to_image()
+        if copy is None:
+            return np.asarray(image)
         try:
             return np.asarray(image, copy=copy)
-        except TypeError as e:
-            if "got an unexpected keyword argument 'copy'" in str(e):
-                return np.asarray(image)
-            raise
+        except TypeError:
+            return np.asarray(image)
 
     def __array__(self, copy=None):
         """Convert to numpy array.
